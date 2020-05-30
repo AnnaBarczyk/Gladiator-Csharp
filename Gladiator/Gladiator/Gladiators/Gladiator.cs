@@ -4,16 +4,16 @@ namespace Gladiator.Gladiators
 {
     public abstract class Gladiator
     {
-        public string Name { get; private set; }
-        private int _HP;
-        private int _SP;
-        private int _DEX;
-        private int _HPMultiplier;
-        private int _SPMultiplier;
-        private int _DEXMultiplier;
-        
         public int LVL;
-        
+        public float CurrentHealth { get; set; }
+        protected string Name { get; private set; }
+        private float HP;
+        private float SP;
+        private float DEX;
+        private Multipliers _HPMultiplier;
+        private Multipliers _SPMultiplier;
+        private Multipliers _DEXMultiplier;
+
         public enum Multipliers
         {
             Low,
@@ -25,6 +25,15 @@ namespace Gladiator.Gladiators
         {
             string classType = this.GetType().ToString();
             return classType + " " + Name;
+        }
+
+        protected Gladiator(int lvl, float hp, float sp, float dex, string name)
+        {
+            LVL = lvl;
+            HP = hp;
+            SP = sp;
+            DEX = dex;
+            Name = name;
         }
 
         private float GetMultiplierValue(Multipliers multipliers)
@@ -40,7 +49,26 @@ namespace Gladiator.Gladiators
             }
 
             return 0;
-
         }
-    }
+        public float GetAvailableStaticticsHP()
+        {
+
+            float availableStatictics = HP * GetMultiplierValue(_HPMultiplier) * LVL;
+            return availableStatictics;
+        }
+        
+        public float GetAvailableStaticticsSP()
+        {
+
+            float availableStatictics = SP * GetMultiplierValue(_SPMultiplier) * LVL;
+            return availableStatictics;
+        }
+        
+        public float GetAvailableStaticticsDEX()
+        {
+
+            float availableStatictics = DEX * GetMultiplierValue(_DEXMultiplier) * LVL;
+            return availableStatictics;
+        }
+}
 }
